@@ -1,0 +1,54 @@
+---
+import "@/styles/globals.css";
+import AuthComponent from "@/components/auth";
+
+interface Props {
+  title: string;
+  requiresAuth?: boolean;
+}
+
+const { title, requiresAuth } = Astro.props;
+
+import { ClientRouter } from "astro:transitions";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} - Mitsuki</title>
+    <AuthComponent requiresAuth={requiresAuth || false} client:load />
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+  </body><script is:inline>
+    const getThemePreference = () => {
+      if (
+        typeof localStorage !== "undefined" &&
+        localStorage.getItem("theme")
+      ) {
+        return localStorage.getItem("theme");
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    };
+    const isDark = getThemePreference() === "dark";
+    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+
+    if (typeof localStorage !== "undefined") {
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+  </script>
+</html>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import ButtonLink from "@/components/ui/ButtonLink.astro";
+import { ModeToggle } from "@/components/mode-toggle";
+import { HeaderDropdown } from "@/components/header-dropdown";
+import ProfileMenu from "@/components/ui/profile-menu";
+
+interface Props {
+  title: string;
+  requiresAuth?: boolean;
+}
+
+const { title, requiresAuth = false } = Astro.props;
+---
+
+<BaseLayout title={title} requiresAuth={requiresAuth}>
+  <header
+    class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border"
+  >
+    <div class="container mx-auto">
+      <div class="flex h-14 items-center px-4">
+        <div class="mr-4 flex">
+          <a class="mr-4 flex items-center gap-2" href="/">
+            <!--TODO: Icon-->
+            <HeaderDropdown client:load />
+            <span class="font-bold">Mitsuki</span>
+          </a>
+          <div class="hidden md:flex">
+            <ButtonLink variant="ghost" href="/login">Link</ButtonLink>
+          </div>
+        </div>
+        <div class="flex flex-1 items-center gap-2 justify-end">
+          <nav class="flex items-center gap-0.5">
+            <ProfileMenu client:load />
+            <ModeToggle client:load />
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container w-full mx-auto">
+    <slot />
+  </div>
+</BaseLayout>

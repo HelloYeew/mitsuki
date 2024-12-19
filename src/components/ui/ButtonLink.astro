@@ -1,0 +1,24 @@
+---
+interface Props {
+  href: string;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+  className?: string;
+}
+
+import { buttonVariants } from "./button";
+
+const { href, variant = "default", className } = Astro.props as Props;
+---
+
+<a
+  class={buttonVariants({ variant }) + " cursor-pointer " + className ?? ""}
+  href={href}
+>
+  <slot />
+</a>

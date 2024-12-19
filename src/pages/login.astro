@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { LoginForm } from "@/components/forms/login-form";
+
+import { ArrowLeft } from "lucide-react";
+import { isAuthenticated } from "../stores/auth-stores";
+---
+
+<BaseLayout title="Login">
+  <div class="flex h-screen w-full items-center justify-center px-4">
+    <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <a
+          class="flex justify-items-center mb-2 p-0 w-20 gap-2 text-muted-foreground cursor-pointer"
+          onclick="history.back()"
+          id="back"
+        >
+          <ArrowLeft size={24} /> Back
+        </a>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>
+          Enter your credential below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LoginForm client:load />
+        <div class="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <a href="#" class="underline"> Sign up </a>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+  <script>
+    const backButton = document.getElementById("back");
+
+    if (history.length <= 1 && backButton) {
+      backButton.style.display = "none";
+    }
+  </script>
+</BaseLayout>
